@@ -3,28 +3,729 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pembrey Country Inn — Coming Soon</title>
+    <title>The Pembrey Country Inn — Your Local, Your Pub</title>
+    <meta name="description" content="The Pembrey Country Inn — The people's pub in the heart of Pembrey. Great drinks, live entertainment, Sunday roasts and a warm welcome for everyone.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --cream: #F5F0E8;
+            --dark: #2C2416;
+            --warm: #8B6914;
+            --warm-light: #C4A44A;
+            --green: #4A5D3A;
+            --green-light: #6B7F5A;
+            --rust: #9B4F3A;
+            --stone: #D4C9B8;
+            --stone-dark: #A89880;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html { scroll-behavior: smooth; }
+
         body {
-            font-family: Georgia, serif;
-            background: #2C2416;
-            color: #F5F0E8;
+            font-family: 'Source Sans 3', sans-serif;
+            background: var(--cream);
+            color: var(--dark);
+            font-weight: 300;
+            line-height: 1.7;
+        }
+
+        /* ── NAV ── */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 100;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background 0.4s, padding 0.4s;
+        }
+        nav.scrolled {
+            background: rgba(44, 36, 22, 0.95);
+            padding: 0.6rem 2rem;
+            backdrop-filter: blur(8px);
+        }
+        nav .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.3rem;
+            color: var(--cream);
+            letter-spacing: 0.05em;
+        }
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 2rem;
+        }
+        nav ul li a {
+            color: var(--cream);
+            text-decoration: none;
+            font-size: 0.85rem;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            font-weight: 400;
+            transition: color 0.3s;
+        }
+        nav ul li a:hover { color: var(--warm-light); }
+
+        .nav-toggle { display: none; background: none; border: none; cursor: pointer; }
+        .nav-toggle span {
+            display: block; width: 24px; height: 2px;
+            background: var(--cream); margin: 5px 0;
+            transition: 0.3s;
+        }
+
+        /* ── HERO ── */
+        .hero {
+            position: relative;
+            height: 100vh;
+            min-height: 600px;
             display: flex;
             align-items: center;
             justify-content: center;
-            min-height: 100vh;
             text-align: center;
+            overflow: hidden;
         }
-        h1 { font-size: 2.5rem; font-weight: 400; margin-bottom: 1rem; }
-        p { color: #A89880; font-size: 1.1rem; }
-        a { color: #C4A44A; }
+        .hero-bg {
+            position: absolute;
+            inset: 0;
+            background:
+                radial-gradient(ellipse at 20% 80%, rgba(74, 93, 58, 0.6) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 20%, rgba(139, 105, 20, 0.4) 0%, transparent 50%),
+                linear-gradient(170deg, #2C2416 0%, #3a2e1a 30%, #4A5D3A 60%, #2C2416 100%);
+        }
+        .hero-bg::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23C4A44A' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            opacity: 0.5;
+        }
+        .hero-bg::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: rgba(44, 36, 22, 0.35);
+        }
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 750px;
+            padding: 0 2rem;
+        }
+        .hero-content .est {
+            font-family: 'Source Sans 3', sans-serif;
+            font-size: 0.8rem;
+            letter-spacing: 0.35em;
+            text-transform: uppercase;
+            color: var(--warm-light);
+            margin-bottom: 1.5rem;
+            opacity: 0;
+            animation: fadeUp 1s 0.3s forwards;
+        }
+        .hero-content h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2.8rem, 7vw, 5.5rem);
+            color: var(--cream);
+            font-weight: 400;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            opacity: 0;
+            animation: fadeUp 1s 0.5s forwards;
+        }
+        .hero-content h1 em {
+            font-style: italic;
+            color: var(--warm-light);
+        }
+        .hero-content p {
+            font-size: 1.15rem;
+            color: var(--stone);
+            max-width: 520px;
+            margin: 0 auto 2.5rem;
+            opacity: 0;
+            animation: fadeUp 1s 0.7s forwards;
+        }
+        .hero-btn {
+            display: inline-block;
+            padding: 0.9rem 2.5rem;
+            border: 1px solid var(--warm-light);
+            color: var(--cream);
+            text-decoration: none;
+            font-size: 0.8rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            font-weight: 600;
+            transition: background 0.3s, color 0.3s;
+            opacity: 0;
+            animation: fadeUp 1s 0.9s forwards;
+        }
+        .hero-btn:hover {
+            background: var(--warm-light);
+            color: var(--dark);
+        }
+        .scroll-hint {
+            position: absolute;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 2;
+            opacity: 0;
+            animation: fadeUp 1s 1.2s forwards;
+        }
+        .scroll-hint span {
+            display: block;
+            width: 1px;
+            height: 40px;
+            background: var(--warm-light);
+            margin: 0 auto;
+            animation: scrollPulse 2s infinite;
+        }
+
+        /* ── ANNOUNCEMENT BANNER ── */
+        .announcement {
+            background: var(--green);
+            color: var(--cream);
+            text-align: center;
+            padding: 3rem 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+        .announcement::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M20 20c0-5.5-4.5-10-10-10S0 14.5 0 20s4.5 10 10 10 10-4.5 10-10zm20 0c0-5.5-4.5-10-10-10s-10 4.5-10 10 4.5 10 10 10 10-4.5 10-10z'/%3E%3C/g%3E%3C/svg%3E");
+        }
+        .announcement-content {
+            position: relative;
+            z-index: 1;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        .announcement h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(1.5rem, 3vw, 2.2rem);
+            font-weight: 400;
+            margin-bottom: 0.8rem;
+            color: var(--cream);
+        }
+        .announcement h2 em { color: var(--warm-light); font-style: italic; }
+        .announcement p {
+            font-size: 1rem;
+            color: var(--stone);
+            line-height: 1.8;
+        }
+        .announcement .date-badge {
+            display: inline-block;
+            background: var(--warm-light);
+            color: var(--dark);
+            padding: 0.4rem 1.5rem;
+            font-size: 0.75rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            font-weight: 600;
+            margin-bottom: 1.2rem;
+            border-radius: 2px;
+        }
+
+        /* ── SECTIONS ── */
+        section { padding: 6rem 2rem; }
+
+        .section-label {
+            font-size: 0.7rem;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            color: var(--warm);
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 400;
+            color: var(--dark);
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+        }
+
+        /* ── ABOUT ── */
+        .about {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+        .about-text p {
+            color: #5a5040;
+            margin-bottom: 1.2rem;
+            font-size: 1.05rem;
+        }
+
+        .about-visual {
+            position: relative;
+            aspect-ratio: 4/5;
+            border-radius: 2px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            background: var(--dark);
+        }
+        .about-visual::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background:
+                radial-gradient(circle at 30% 40%, rgba(196, 164, 74, 0.2) 0%, transparent 50%),
+                radial-gradient(circle at 70% 70%, rgba(74, 93, 58, 0.3) 0%, transparent 50%),
+                linear-gradient(135deg, #2C2416 0%, #3a2e1a 50%, #4A5D3A 100%);
+        }
+        .about-visual-content {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            padding: 2rem;
+        }
+        .about-visual-content .decorative-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+        .about-visual-content p {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.6rem;
+            font-style: italic;
+            color: var(--warm-light);
+            line-height: 1.4;
+        }
+        .about-visual-content .sub {
+            font-family: 'Source Sans 3', sans-serif;
+            font-size: 0.75rem;
+            font-style: normal;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            color: var(--stone-dark);
+            margin-top: 1rem;
+        }
+        .about-visual .accent-border {
+            position: absolute;
+            top: -12px;
+            right: -12px;
+            width: 100%;
+            height: 100%;
+            border: 1px solid var(--warm-light);
+            border-radius: 2px;
+            z-index: -1;
+        }
+
+        /* ── FEATURES ── */
+        .features {
+            background: var(--dark);
+            color: var(--cream);
+        }
+        .features-inner {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+        }
+        .feature-card {
+            padding: 3rem;
+            border: 1px solid rgba(196, 164, 74, 0.15);
+            position: relative;
+            overflow: hidden;
+        }
+        .feature-card .icon {
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            display: block;
+        }
+        .feature-card h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.6rem;
+            font-weight: 400;
+            margin-bottom: 1rem;
+            color: var(--warm-light);
+        }
+        .feature-card p {
+            color: var(--stone);
+            font-size: 0.95rem;
+            line-height: 1.8;
+        }
+        .feature-card .highlight {
+            color: var(--warm-light);
+            font-weight: 600;
+        }
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0;
+            width: 60px;
+            height: 1px;
+            background: var(--warm-light);
+        }
+
+        /* ── COMMUNITY SECTION (replaces Gallery) ── */
+        .community {
+            text-align: center;
+            background: var(--cream);
+        }
+        .community-inner {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        .community-cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            margin-top: 3rem;
+        }
+        .community-card {
+            background: var(--dark);
+            border-radius: 2px;
+            padding: 2.5rem 1.5rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .community-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--warm-light), var(--green-light));
+        }
+        .community-card .card-icon {
+            font-size: 2.2rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+        .community-card h4 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.15rem;
+            color: var(--warm-light);
+            font-weight: 400;
+            margin-bottom: 0.6rem;
+        }
+        .community-card p {
+            font-size: 0.85rem;
+            color: var(--stone-dark);
+            line-height: 1.6;
+        }
+
+        /* ── HOURS & CONTACT ── */
+        .info {
+            background: var(--dark);
+            color: var(--cream);
+        }
+        .info-inner {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 4rem;
+        }
+        .info-block h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.3rem;
+            color: var(--warm-light);
+            margin-bottom: 1.5rem;
+            font-weight: 400;
+        }
+        .info-block p, .info-block a {
+            color: var(--stone);
+            font-size: 0.95rem;
+            line-height: 2;
+        }
+        .info-block a {
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        .info-block a:hover { color: var(--warm-light); }
+
+        .hours-row {
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 1px solid rgba(196, 164, 74, 0.1);
+            padding: 0.3rem 0;
+        }
+        .hours-row span:first-child { font-weight: 400; }
+
+        /* ── MAP ── */
+        .map-container {
+            width: 100%;
+            height: 300px;
+            margin-top: 2rem;
+            border-radius: 2px;
+            overflow: hidden;
+        }
+        .map-container iframe {
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+
+        /* ── FOOTER ── */
+        footer {
+            padding: 2rem;
+            text-align: center;
+            background: #1a160e;
+            color: var(--stone-dark);
+            font-size: 0.8rem;
+            letter-spacing: 0.05em;
+        }
+        footer a {
+            color: var(--warm-light);
+            text-decoration: none;
+        }
+
+        /* ── ANIMATIONS ── */
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes scrollPulse {
+            0%, 100% { opacity: 0.3; transform: scaleY(0.6); }
+            50% { opacity: 1; transform: scaleY(1); }
+        }
+
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s, transform 0.8s;
+        }
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ── RESPONSIVE ── */
+        @media (max-width: 768px) {
+            nav ul { display: none; }
+            nav ul.open {
+                display: flex;
+                flex-direction: column;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background: rgba(44, 36, 22, 0.97);
+                padding: 1.5rem 2rem;
+                gap: 1rem;
+            }
+            .nav-toggle { display: block; }
+
+            .about { grid-template-columns: 1fr; gap: 2rem; }
+            .about-visual { aspect-ratio: 16/9; }
+            .about-visual .accent-border { display: none; }
+
+            .features-inner { grid-template-columns: 1fr; }
+            .feature-card { padding: 2rem; }
+
+            .community-cards { grid-template-columns: 1fr; }
+
+            .info-inner {
+                grid-template-columns: 1fr;
+                gap: 2.5rem;
+            }
+
+            section { padding: 4rem 1.5rem; }
+        }
+
+        @media (max-width: 480px) {
+            .community-cards { grid-template-columns: 1fr; }
+        }
     </style>
 </head>
 <body>
-    <div>
-        <h1>Pembrey Country Inn</h1>
-        <p>Our new website is on its way. In the meantime, give us a call or drop us an email.</p>
-        <p><a href="tel:07812335015">07812 335 015</a> | <a href="mailto:info@pembreycountryinn.co.uk">info@pembreycountryinn.co.uk</a></p>
+
+    <!-- NAV -->
+    <nav id="nav">
+        <div class="logo">The Pembrey Country Inn</div>
+        <button class="nav-toggle" onclick="document.querySelector('nav ul').classList.toggle('open')" aria-label="Menu">
+            <span></span><span></span><span></span>
+        </button>
+        <ul>
+            <li><a href="#about">Our Story</a></li>
+            <li><a href="#features">What's On</a></li>
+            <li><a href="#community">Community</a></li>
+            <li><a href="#info">Visit</a></li>
+        </ul>
+    </nav>
+
+    <!-- HERO -->
+    <section class="hero">
+        <div class="hero-bg"></div>
+        <div class="hero-content">
+            <div class="est">Pembrey's Local &bull; The People's Pub</div>
+            <h1>The <em>Pembrey</em> Country Inn</h1>
+            <p>Your pub, your community. The doors are open, the welcome is warm, and the kettle's on. Well, the taps are on at least.</p>
+            <a href="#info" class="hero-btn">Find Us</a>
+        </div>
+        <div class="scroll-hint"><span></span></div>
+    </section>
+
+    <!-- ANNOUNCEMENT BANNER -->
+    <div class="announcement fade-in">
+        <div class="announcement-content">
+            <div class="date-badge">Now Open</div>
+            <h2>We're <em>open</em> &amp; ready to welcome you</h2>
+            <p>The Pembrey Country Inn opened its doors on 1st May 2026 at 12 noon. Pop in for a drink, enjoy bar snacks, and join us for live entertainment in the evenings. Our kitchen officially opens Sunday 10th May with proper Sunday lunches — just 25 covers available, so watch this space for booking details. Takeaways also available.</p>
+        </div>
     </div>
+
+    <!-- ABOUT -->
+    <section id="about">
+        <div class="about">
+            <div class="about-text fade-in">
+                <div class="section-label">Our Story</div>
+                <div class="section-title">This is your pub</div>
+                <p>The Pembrey Country Inn is back — and it belongs to you. This is the people's pub, a place where the Pembrey community comes together over a pint, a catch-up, and a warm welcome. Whether you're a familiar face who's been coming here for years or you're popping in for the very first time, you're one of us.</p>
+                <p>We're honoured to be carrying this pub forward and we're here to build something special with the community at its heart. This isn't just somewhere to have a drink — it's your local, your meeting place, your home from home.</p>
+                <p>We can't wait to get to know our neighbours, hear your stories, and make The Pembrey Country Inn everything it should be — yours.</p>
+            </div>
+            <div class="about-visual fade-in">
+                <div class="about-visual-content">
+                    <span class="decorative-icon">🍻</span>
+                    <p>Your local.<br>Your pub.<br>Your community.</p>
+                    <p class="sub">The Pembrey Country Inn, Pembrey</p>
+                </div>
+                <div class="accent-border"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FEATURES -->
+    <section id="features" class="features">
+        <div class="features-inner">
+            <div class="feature-card fade-in">
+                <span class="icon">🍽</span>
+                <h3>Food &amp; Dining</h3>
+                <p>Bar snacks are available now to keep you going while the kitchen warms up. Our kitchen officially opens on <span class="highlight">Sunday 10th May</span> with proper Sunday lunches — but spaces are limited to just <span class="highlight">25 covers</span>, so keep your eyes peeled for booking details.</p>
+                <p style="margin-top: 1rem;">Fancy a Sunday roast at home? <span class="highlight">Takeaways will also be available</span> once the kitchen opens.</p>
+            </div>
+            <div class="feature-card fade-in">
+                <span class="icon">🎵</span>
+                <h3>Live Entertainment</h3>
+                <p>What's a pub without a bit of craic? We've got live entertainment lined up to keep things buzzing. Check in with us for what's coming up — there's always something happening at The Pembrey Country Inn.</p>
+                <p style="margin-top: 1rem;">Follow us on Facebook for the latest on upcoming events, music nights, and more.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- COMMUNITY -->
+    <section id="community" class="community">
+        <div class="community-inner fade-in">
+            <div class="section-label">At the Heart of Pembrey</div>
+            <div class="section-title">More than just a pub</div>
+            <p style="color: #5a5040; max-width: 600px; margin: 0 auto; font-size: 1.05rem;">The Pembrey Country Inn is a place for everyone — somewhere the community can come together, unwind, and feel at home.</p>
+        </div>
+        <div class="community-cards" style="max-width: 900px; margin: 3rem auto 0;">
+            <div class="community-card fade-in">
+                <span class="card-icon">🏡</span>
+                <h4>Your Local</h4>
+                <p>A proper community pub where everyone's welcome and nobody's a stranger for long.</p>
+            </div>
+            <div class="community-card fade-in">
+                <span class="card-icon">🍺</span>
+                <h4>Great Drinks</h4>
+                <p>Well-kept pints, wines, spirits and soft drinks. Something for everyone at the bar.</p>
+            </div>
+            <div class="community-card fade-in">
+                <span class="card-icon">❤️</span>
+                <h4>Built for Pembrey</h4>
+                <p>This pub is here because of you. Come help us make it something special together.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- INFO -->
+    <section id="info" class="info">
+        <div class="info-inner">
+            <div class="info-block fade-in">
+                <h3>Opening Hours</h3>
+                <div class="hours-row"><span>Monday</span><span>12pm – 11pm</span></div>
+                <div class="hours-row"><span>Tuesday</span><span>12pm – 11pm</span></div>
+                <div class="hours-row"><span>Wednesday</span><span>12pm – 11pm</span></div>
+                <div class="hours-row"><span>Thursday</span><span>12pm – 11pm</span></div>
+                <div class="hours-row"><span>Friday</span><span>12pm – 12am</span></div>
+                <div class="hours-row"><span>Saturday</span><span>11am – 12am</span></div>
+                <div class="hours-row"><span>Sunday</span><span>11am – 10pm</span></div>
+                <p style="margin-top: 1rem; font-size: 0.8rem; color: var(--stone-dark); font-style: italic;">Hours may vary in our first few weeks — follow us on Facebook for the latest.</p>
+            </div>
+            <div class="info-block fade-in">
+                <h3>Get in Touch</h3>
+                <p>
+                    <strong>Find us on Facebook:</strong><br>
+                    The Pembrey Country Inn
+                </p>
+                <br>
+                <p>
+                    <strong>Address:</strong><br>
+                    30 Randell Square<br>
+                    Pembrey<br>
+                    Burry Port<br>
+                    SA16 0UA
+                </p>
+                <br>
+                <p style="font-size: 0.85rem; color: var(--stone-dark); font-style: italic;">
+                    Phone, email &amp; booking details coming soon.
+                </p>
+            </div>
+            <div class="info-block fade-in">
+                <h3>Find Us</h3>
+                <p>
+                    The Pembrey Country Inn<br>
+                    30 Randell Square<br>
+                    Pembrey, Burry Port<br>
+                    Carmarthenshire<br>
+                    SA16 0UA
+                </p>
+                <div class="map-container">
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2460.5!2d-4.2363!3d51.6831!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x486ef5e5c7d7e1a7%3A0x1!2s30+Randell+Square%2C+Pembrey%2C+Burry+Port+SA16+0UA!5e0!3m2!1sen!2suk!4v1714500000000!5m2!1sen!2suk" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <p>&copy; 2026 The Pembrey Country Inn. The People's Pub, Pembrey.</p>
+    </footer>
+
+    <!-- SCRIPTS -->
+    <script>
+        // Nav background on scroll
+        const nav = document.getElementById('nav');
+        window.addEventListener('scroll', () => {
+            nav.classList.toggle('scrolled', window.scrollY > 50);
+        });
+
+        // Close mobile nav on link click
+        document.querySelectorAll('nav ul li a').forEach(link => {
+            link.addEventListener('click', () => {
+                document.querySelector('nav ul').classList.remove('open');
+            });
+        });
+
+        // Fade-in on scroll
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.15 });
+
+        document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+    </script>
+
 </body>
 </html>
