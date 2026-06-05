@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Pembrey Country Inn — TV Signage</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,300;1,400&family=Montserrat:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box; }
+        html, body { width:100vw; height:100vh; overflow:hidden; background:#000; font-family:'Montserrat',sans-serif; }
+        .ss { width:100vw; height:100vh; position:relative; }
+        .slide { position:absolute; inset:0; opacity:0; transition:opacity 1.2s ease-in-out; overflow:hidden; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:40px 60px; }
+        .slide.active { opacity:1; }
+        .slide.active .si { animation: fadeUp 0.7s ease forwards; opacity:0; }
+        .slide.active .si:nth-child(1) { animation-delay:0.1s; }
+        .slide.active .si:nth-child(2) { animation-delay:0.25s; }
+        .slide.active .si:nth-child(3) { animation-delay:0.4s; }
+        .slide.active .si:nth-child(4) { animation-delay:0.55s; }
+        .slide.active .si:nth-child(5) { animation-delay:0.7s; }
+        .slide.active .si:nth-child(6) { animation-delay:0.85s; }
+        .slide.active .si:nth-child(7) { animation-delay:1.0s; }
+        .slide:not(.active) .si { opacity:0; }
+        @keyframes fadeUp { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
+        .gold-top, .gold-bot { position:absolute; left:0; right:0; height:3px; background:linear-gradient(90deg,#1a1209,#C8952E,#E2B84B,#C8952E,#1a1209); z-index:10; }
+        .gold-top { top:0; } .gold-bot { bottom:28px; }
+        .eyebrow { font-size:clamp(9px,1.2vw,13px); font-weight:700; letter-spacing:0.5em; text-transform:uppercase; color:rgba(226,184,75,0.65); margin-bottom:16px; }
+        .orn { display:flex; align-items:center; gap:12px; margin:14px auto; width:min(300px,70%); }
+        .ol { flex:1; height:1px; background:linear-gradient(90deg,transparent,#C8952E); }
+        .or { flex:1; height:1px; background:linear-gradient(90deg,#C8952E,transparent); }
+        .od { width:5px; height:5px; background:#C8952E; transform:rotate(45deg); flex-shrink:0; }
+        .progress { position:fixed; bottom:0; left:0; height:3px; background:#E2B84B; z-index:100; width:0%; transition:width linear; }
+        .dots { position:fixed; bottom:8px; left:50%; transform:translateX(-50%); display:flex; gap:8px; z-index:100; }
+        .dot { width:6px; height:6px; border-radius:50%; background:rgba(255,255,255,0.2); cursor:pointer; transition:background 0.3s, transform 0.3s; }
+        .dot.active { background:#E2B84B; transform:scale(1.3); }
+
+        /* S1 */
+        .s1 { background: radial-gradient(ellipse at 20% 80%, rgba(200,149,46,0.2) 0%,transparent 50%), radial-gradient(ellipse at 80% 20%, rgba(226,184,75,0.1) 0%,transparent 50%), linear-gradient(160deg,#0d0a06 0%,#1a1209 40%,#2a1e0e 60%,#0d0a06 100%); }
+        .s1-name { font-family:'Cormorant Garamond',Georgia,serif; font-size:clamp(36px,7vw,88px); font-weight:400; color:#FDFAF3; line-height:0.9; }
+        .s1-name em { font-style:italic; color:#E2B84B; font-weight:300; display:block; }
+        .s1-tag { font-size:clamp(10px,1.3vw,15px); font-weight:300; letter-spacing:0.35em; text-transform:uppercase; color:rgba(255,255,255,0.4); margin-top:16px; }
+        .s1-addr { font-family:'Cormorant Garamond',serif; font-size:clamp(15px,2vw,24px); font-style:italic; color:rgba(255,255,255,0.28); margin-top:24px; line-height:1.8; }
+
+        /* S2 */
+        .s2 { background: radial-gradient(ellipse at 25% 60%, rgba(180,100,20,0.35) 0%,transparent 55%), radial-gradient(ellipse at 75% 30%, rgba(100,60,10,0.25) 0%,transparent 45%), linear-gradient(155deg,#0f0a04 0%,#1e1408 35%,#2a1c0a 55%,#0f0a04 100%); }
+        .s2-title { font-family:'Cormorant Garamond',Georgia,serif; font-size:clamp(52px,10vw,140px); font-weight:700; color:#FDFAF3; line-height:0.85; }
+        .s2-title em { display:block; font-style:italic; font-weight:300; color:#E2B84B; font-size:0.92em; }
+        .s2-tagline { font-family:'Cormorant Garamond',serif; font-size:clamp(14px,2vw,26px); font-style:italic; font-weight:300; color:rgba(255,255,255,0.45); margin:10px 0 22px; }
+        .s2-rule { width:min(400px,70%); height:1px; background:linear-gradient(90deg,transparent,rgba(226,184,75,0.45),transparent); margin:0 auto 24px; }
+        .s2-pricing { display:flex; gap:2px; margin:0 0 28px; width:min(580px,85vw); }
+        .s2-pc { flex:1; padding:16px 8px; background:rgba(0,0,0,0.5); border:1px solid rgba(226,184,75,0.1); text-align:center; position:relative; }
+        .s2-pc::before { content:''; position:absolute; top:0; left:0; right:0; height:2px; background:rgba(226,184,75,0.2); }
+        .s2-pc.hl { background:rgba(226,184,75,0.1); border-color:rgba(226,184,75,0.3); }
+        .s2-pc.hl::before { background:#E2B84B; }
+        .s2-pc .pn { font-family:'Cormorant Garamond',serif; font-size:clamp(13px,1.8vw,20px); font-style:italic; color:rgba(255,255,255,0.5); margin-bottom:6px; }
+        .s2-pc .pd { font-size:clamp(9px,1vw,12px); font-weight:400; letter-spacing:0.1em; color:rgba(255,255,255,0.28); margin-bottom:6px; }
+        .s2-pc .pv { font-family:'Cormorant Garamond',serif; font-size:clamp(22px,4vw,48px); font-weight:700; color:#E2B84B; line-height:1; }
+        .s2-staff-lbl { font-size:clamp(9px,1.1vw,12px); font-weight:700; letter-spacing:0.4em; text-transform:uppercase; color:rgba(226,184,75,0.45); margin-bottom:6px; }
+        .s2-staff { font-family:'Cormorant Garamond',serif; font-size:clamp(18px,2.8vw,38px); font-style:italic; font-weight:300; color:rgba(226,184,75,0.8); }
+
+        /* S3 */
+        .s3 { background: radial-gradient(ellipse at 50% 40%, rgba(60,40,10,0.8) 0%,transparent 55%), radial-gradient(ellipse at 20% 80%, rgba(180,140,20,0.15) 0%,transparent 45%), linear-gradient(150deg,#0a0804 0%,#181208 40%,#221a08 60%,#0a0804 100%); }
+        .s3-title { font-family:'Cormorant Garamond',serif; font-size:clamp(44px,8vw,120px); font-weight:700; color:#FDFAF3; line-height:0.88; }
+        .s3-title em { display:block; font-style:italic; color:#E2B84B; font-weight:300; font-size:0.8em; }
+        .s3-soon { display:inline-block; border:1px solid rgba(226,184,75,0.35); background:rgba(226,184,75,0.08); padding:10px 32px; margin:18px 0; }
+        .s3-soon span { font-size:clamp(10px,1.3vw,15px); font-weight:700; letter-spacing:0.4em; text-transform:uppercase; color:#E2B84B; }
+        .s3-desc { font-family:'Cormorant Garamond',serif; font-size:clamp(14px,2vw,26px); font-style:italic; font-weight:300; color:rgba(255,255,255,0.45); max-width:580px; line-height:1.5; margin-bottom:18px; }
+        .s3-watch { font-size:clamp(9px,1.1vw,13px); font-weight:600; letter-spacing:0.3em; text-transform:uppercase; color:rgba(255,255,255,0.28); }
+        .s3-watch span { color:#E2B84B; }
+
+        /* S4 */
+        .s4 { background: radial-gradient(ellipse at 30% 50%, rgba(160,90,15,0.35) 0%,transparent 55%), radial-gradient(ellipse at 75% 25%, rgba(100,60,10,0.25) 0%,transparent 50%), linear-gradient(150deg,#080604 0%,#140e06 40%,#1e1608 60%,#080604 100%); }
+        .s4-title { font-family:'Cormorant Garamond',serif; font-size:clamp(44px,8vw,120px); font-weight:700; color:#FDFAF3; line-height:0.88; }
+        .s4-title em { display:block; font-style:italic; color:#E2B84B; font-weight:300; font-size:0.85em; }
+        .s4-itag { font-family:'Cormorant Garamond',serif; font-size:clamp(14px,1.8vw,24px); font-style:italic; font-weight:300; color:rgba(255,255,255,0.42); margin:8px 0 20px; }
+        .s4-act { width:min(560px,85vw); background:rgba(0,0,0,0.45); border:1px solid rgba(226,184,75,0.22); position:relative; padding:22px 28px; margin-bottom:18px; }
+        .s4-act::before { content:''; position:absolute; top:0; left:0; right:0; height:2px; background:linear-gradient(90deg,transparent,#E2B84B,transparent); }
+        .s4-act-label { font-size:clamp(9px,1.1vw,12px); font-weight:700; letter-spacing:0.45em; text-transform:uppercase; color:rgba(226,184,75,0.5); margin-bottom:10px; }
+        .s4-act-name { font-family:'Cormorant Garamond',serif; font-size:clamp(28px,5vw,64px); font-weight:700; color:#FDFAF3; line-height:1; margin-bottom:8px; }
+        .s4-act-desc { font-family:'Cormorant Garamond',serif; font-size:clamp(13px,1.8vw,22px); font-style:italic; font-weight:300; color:rgba(255,255,255,0.5); line-height:1.4; }
+        .s4-act-tags { display:flex; gap:8px; justify-content:center; margin-top:12px; flex-wrap:wrap; }
+        .s4-tag-pill { padding:5px 16px; border:1px solid rgba(226,184,75,0.2); font-size:clamp(9px,1.1vw,12px); font-weight:600; letter-spacing:0.2em; text-transform:uppercase; color:rgba(226,184,75,0.65); }
+        .s4-fb { font-size:clamp(9px,1.1vw,13px); font-weight:600; letter-spacing:0.3em; text-transform:uppercase; color:rgba(255,255,255,0.28); }
+        .s4-fb span { color:rgba(226,184,75,0.7); }
+
+        /* S5 */
+        .s5 { background:linear-gradient(160deg,rgba(10,6,2,0.82) 0%,rgba(10,6,2,0.55) 35%,rgba(10,6,2,0.78) 100%), #1a1209; }
+        .s5-title { font-family:'Cormorant Garamond',serif; font-size:clamp(36px,7vw,100px); font-weight:700; color:#FDFAF3; line-height:0.88; }
+        .s5-title em { font-style:italic; color:#E2B84B; font-weight:300; }
+        .s5-sub { font-size:clamp(10px,1.3vw,15px); font-weight:300; letter-spacing:0.28em; text-transform:uppercase; color:rgba(255,255,255,0.38); margin-top:14px; }
+        .s5-staff { font-family:'Cormorant Garamond',serif; font-size:clamp(22px,3.5vw,48px); font-style:italic; font-weight:300; color:rgba(226,184,75,0.8); margin-top:16px; }
+    </style>
+</head>
+<body>
+<div class="ss">
+
+    <!-- S1: Welcome -->
+    <div class="slide s1 active">
+        <div class="gold-top"></div>
+        <div class="si eyebrow">Welcome to</div>
+        <div class="si s1-name">The Pembrey<em>Country Inn</em></div>
+        <div class="si orn"><div class="ol"></div><div class="od"></div><div style="font-size:10px;font-weight:700;letter-spacing:0.35em;text-transform:uppercase;color:rgba(226,184,75,0.5);white-space:nowrap;">Pembrey's Local</div><div class="od"></div><div class="or"></div></div>
+        <div class="si s1-tag">The People's Pub &mdash; Drink &mdash; Eat &mdash; Celebrate</div>
+        <div class="si s1-addr">30 Randell Square &mdash; Pembrey &mdash; Burry Port &mdash; SA16 0UA</div>
+        <div class="gold-bot"></div>
+    </div>
+
+    <!-- S2: Sunday Lunch -->
+    <div class="slide s2">
+        <div class="gold-top"></div>
+        <div class="si eyebrow">Every Sunday from 12 noon</div>
+        <div class="si s2-title">Sunday<em>Lunch</em></div>
+        <div class="si s2-tagline">Turkey &mdash; Beef &mdash; Pork &mdash; All the trimmings &mdash; Homemade desserts</div>
+        <div class="si s2-rule"></div>
+        <div class="si s2-pricing">
+            <div class="s2-pc"><div class="pn">One Course</div><div class="pd">Main &amp; trimmings</div><div class="pv">&#163;13.95</div></div>
+            <div class="s2-pc hl"><div class="pn">Two Courses</div><div class="pd">Starter &amp; main</div><div class="pv">&#163;16.95</div></div>
+            <div class="s2-pc"><div class="pn">Three Courses</div><div class="pd">The full works</div><div class="pv">&#163;19.95</div></div>
+        </div>
+        <div class="si s2-staff-lbl">To book your table</div>
+        <div class="si s2-staff">Speak to a member of staff</div>
+        <div class="gold-bot"></div>
+    </div>
+
+    <!-- S3: Quiz Night -->
+    <div class="slide s3">
+        <div class="gold-top"></div>
+        <div class="si" style="margin-bottom:14px;">
+            <svg width="80" height="80" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="40" cy="40" r="36" stroke="rgba(226,184,75,0.35)" stroke-width="1.5"/>
+                <circle cx="40" cy="40" r="28" stroke="rgba(226,184,75,0.2)" stroke-width="1"/>
+                <text x="40" y="54" text-anchor="middle" font-family="Georgia,serif" font-size="42" font-weight="700" fill="#E2B84B">?</text>
+            </svg>
+        </div>
+        <div class="si s3-title">Quiz<em>Night</em></div>
+        <div class="si s3-soon"><span>Coming Soon to The Pembrey</span></div>
+        <div class="si s3-desc">Test your knowledge with friends and family right here at your local. Good laughs, great prizes, and even better company.</div>
+        <div class="si s3-watch">Follow us on Facebook for details <span>&#8212; The Pembrey Country Inn</span></div>
+        <div class="gold-bot"></div>
+    </div>
+
+    <!-- S4: Live Music -->
+    <div class="slide s4">
+        <div class="gold-top"></div>
+        <div class="si" style="margin-bottom:12px;">
+            <svg width="64" height="64" viewBox="0 0 72 72" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="36" cy="36" r="32" stroke="rgba(226,184,75,0.3)" stroke-width="1.5"/>
+                <path d="M28 52 L28 28 L52 22 L52 42" stroke="#E2B84B" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+                <circle cx="22" cy="54" r="7" stroke="#E2B84B" stroke-width="2" fill="rgba(226,184,75,0.1)"/>
+                <circle cx="46" cy="44" r="7" stroke="#E2B84B" stroke-width="2" fill="rgba(226,184,75,0.1)"/>
+            </svg>
+        </div>
+        <div class="si s4-title">Live<em>Music</em></div>
+        <div class="si s4-itag">Live entertainment every Friday night from 8pm till late</div>
+        <div class="si s4-act">
+            <div class="s4-act-label">Next up &mdash; Friday night</div>
+            <div class="s4-act-name">John Baker</div>
+            <div class="s4-act-desc">Live covers &mdash; including his favourite Oasis classics</div>
+            <div class="s4-act-tags">
+                <div class="s4-tag-pill">Live Covers</div>
+                <div class="s4-tag-pill">Oasis</div>
+                <div class="s4-tag-pill">8pm till late</div>
+                <div class="s4-tag-pill">Free Entry</div>
+            </div>
+        </div>
+        <div class="si s4-fb">Follow us on Facebook for all upcoming acts <span>&#8212; The Pembrey Country Inn</span></div>
+        <div class="gold-bot"></div>
+    </div>
+
+    <!-- S5: Come Join Us -->
+    <div class="slide s5">
+        <div class="gold-top"></div>
+        <div class="si eyebrow">The Pembrey Country Inn</div>
+        <div class="si s5-title">Come <em>Join Us</em></div>
+        <div class="si orn"><div class="ol"></div><div class="od"></div><div class="or"></div></div>
+        <div class="si s5-sub">Sunday Lunch &mdash; Live Music &mdash; Quiz Night &mdash; Good Times</div>
+        <div class="si" style="font-size:clamp(9px,1.1vw,12px);font-weight:700;letter-spacing:0.4em;text-transform:uppercase;color:rgba(226,184,75,0.45);margin-top:24px;">To find out more or to book</div>
+        <div class="si s5-staff">Speak to a member of staff</div>
+        <div class="gold-bot"></div>
+    </div>
+
+</div>
+
+<div class="dots">
+    <div class="dot active" onclick="goTo(0)"></div>
+    <div class="dot" onclick="goTo(1)"></div>
+    <div class="dot" onclick="goTo(2)"></div>
+    <div class="dot" onclick="goTo(3)"></div>
+    <div class="dot" onclick="goTo(4)"></div>
+</div>
+<div class="progress" id="prog"></div>
+
+<script>
+    const DURATION = 7000;
+    const slides = document.querySelectorAll('.slide');
+    const dots = document.querySelectorAll('.dot');
+    const prog = document.getElementById('prog');
+    let cur = 0, timer;
+    function goTo(n) {
+        slides[cur].classList.remove('active');
+        dots[cur].classList.remove('active');
+        cur = n;
+        slides[cur].classList.add('active');
+        dots[cur].classList.add('active');
+        startProg();
+    }
+    function startProg() {
+        clearTimeout(timer);
+        prog.style.transition = 'none';
+        prog.style.width = '0%';
+        setTimeout(function() {
+            prog.style.transition = 'width ' + DURATION + 'ms linear';
+            prog.style.width = '100%';
+        }, 50);
+        timer = setTimeout(function() { goTo((cur + 1) % slides.length); }, DURATION);
+    }
+    startProg();
+</script>
+</body>
+</html>
