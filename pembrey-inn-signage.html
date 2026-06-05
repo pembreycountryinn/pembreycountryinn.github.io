@@ -2,7 +2,10 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimal-ui">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <title>The Pembrey Country Inn — TV Signage</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,300;1,400&family=Montserrat:wght@300;400;600;700&display=swap" rel="stylesheet">
@@ -174,8 +177,7 @@
         <div class="si s5-title">Come <em>Join Us</em></div>
         <div class="si orn"><div class="ol"></div><div class="od"></div><div class="or"></div></div>
         <div class="si s5-sub">Sunday Lunch &mdash; Live Music &mdash; Quiz Night &mdash; Good Times</div>
-        <div class="si" style="font-size:clamp(9px,1.1vw,12px);font-weight:700;letter-spacing:0.4em;text-transform:uppercase;color:rgba(226,184,75,0.45);margin-top:24px;">To find out more or to book</div>
-        <div class="si s5-staff">Speak to a member of staff</div>
+
         <div class="gold-bot"></div>
     </div>
 
@@ -203,6 +205,24 @@
         slides[cur].classList.add('active');
         dots[cur].classList.add('active');
         startProg();
+
+    // Request fullscreen on load — hides Silk Browser nav bar
+    function goFullscreen() {
+        var el = document.documentElement;
+        if (el.requestFullscreen) { el.requestFullscreen(); }
+        else if (el.webkitRequestFullscreen) { el.webkitRequestFullscreen(); }
+        else if (el.mozRequestFullScreen) { el.mozRequestFullScreen(); }
+        else if (el.msRequestFullscreen) { el.msRequestFullscreen(); }
+    }
+
+    // Trigger on first user interaction (required by browsers)
+    document.addEventListener('click', function onFirst() {
+        goFullscreen();
+        document.removeEventListener('click', onFirst);
+    }, { once: true });
+
+    // Also try immediately in case autoplay is allowed
+    try { goFullscreen(); } catch(e) {}
     }
     function startProg() {
         clearTimeout(timer);
